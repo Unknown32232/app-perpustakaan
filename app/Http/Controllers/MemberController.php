@@ -9,9 +9,9 @@ class MemberController extends Controller
 {
     // Data dummy sementara sebelum ada database
     private array $members = [
-        ['id' => 1, 'nama' => 'Laudy Kartika Buchori', 'nim' => '3125600022', 'email' => 'laudy@mhs.pens.ac.id', 'nomor_telepon' => '081298765432', 'alamat' => 'Surabaya', 'status' => 'Aktif'],    
-        ['id' => 2, 'nama' => 'Nur Arifky', 'nim' => '3125600023', 'email' => 'rifky@mhs.pens.ac.id', 'nomor_telepon' => '081233334444', 'alamat' => 'Madura', 'status' => 'Aktif'],
-        ['id' => 3, 'nama' => 'Fawwaz Al Ghifari', 'nim' => '3125600024', 'email' => 'fawwaz@mhs.pens.ac.id', 'nomor_telepon' => '081234567890', 'alamat' => 'Jombang', 'status' => 'Aktif'],
+        ['id' => 1, 'nama' => 'Laudy Kartika Buchori', 'nim' => '3125600022', 'email' => 'laudy@mhs.pens.ac.id', 'nomor_telepon' => '081298765432', 'status' => 'Aktif'],    
+        ['id' => 2, 'nama' => 'Nur Arifky', 'nim' => '3125600023', 'email' => 'rifky@mhs.pens.ac.id', 'nomor_telepon' => '081233334444', 'status' => 'Aktif'],
+        ['id' => 3, 'nama' => 'Fawwaz Al Ghifari', 'nim' => '3125600024', 'email' => 'fawwaz@mhs.pens.ac.id', 'nomor_telepon' => '081234567890', 'status' => 'Aktif'],
     ];
 
     public function index()
