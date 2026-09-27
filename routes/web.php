@@ -11,7 +11,7 @@ Route::get('/', function () {
 });
 
 Route::resource('books', BookController::class);
-Route::resource('categories', CategoryController::class)->except(['show']);
+Route::resource('categories', CategoryController::class);
 Route::resource('members', MemberController::class);
 Route::resource('loans', LoanController::class);
 Route::put('/loans/{id}/kembalikan', [LoanController::class, 'kembalikan'])

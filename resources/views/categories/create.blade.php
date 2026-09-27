@@ -20,7 +20,7 @@
         @error('deskripsi')
             <div class="error">{{ $message }}</div>
         @enderror
-
+        <br>
         <button type="submit" class="btn">Simpan</button>
     </form>
 @endsection
