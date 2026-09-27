@@ -3,21 +3,23 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreMemberRequest;
+use App\Models\Member;                 // ⬅️ TAMBAHAN
 use Illuminate\Http\Request;
 
 class MemberController extends Controller
 {
-    // Data dummy sementara sebelum ada database
-    private array $members = [
-        ['id' => 1, 'nama' => 'Laudy Kartika Buchori', 'nim' => '3125600022', 'email' => 'laudy@mhs.pens.ac.id', 'nomor_telepon' => '081298765432', 'status' => 'Aktif'],    
-        ['id' => 2, 'nama' => 'Nur Arifky', 'nim' => '3125600023', 'email' => 'rifky@mhs.pens.ac.id', 'nomor_telepon' => '081233334444', 'status' => 'Aktif'],
-        ['id' => 3, 'nama' => 'Fawwaz Al Ghifari', 'nim' => '3125600024', 'email' => 'fawwaz@mhs.pens.ac.id', 'nomor_telepon' => '081234567890', 'status' => 'Aktif'],
-    ];
+    // ⬅️ HAPUS: private array $members = [...]  (tidak dipakai lagi)
 
-    public function index()
+    public function index(Request $request)
     {
-        $members = $this->members;
-        
+        // ⬅️ UBAH: query Eloquent + search + pagination
+        $search = $request->query('search');
+
+        $members = Member::when($search, function ($query, $search) {
+                return $query->where('nama', 'like', "%{$search}%");
+            })
+            ->paginate(10);
+
         return view('members.index', compact('members'));
     }
 
@@ -28,32 +30,49 @@ class MemberController extends Controller
 
     public function store(StoreMemberRequest $request)
     {
-        // Jika lolos validasi, ambil datanya
         $validated = $request->validated();
 
-        // Redirect dengan membawa pesan sukses
+        // ⬅️ TAMBAHAN: simpan ke DB
+        Member::create($validated);
+
         return redirect()->route('members.index')
-            ->with('success', "Anggota \"{$validated['nama']}\" berhasil ditambahkan (data dummy, belum tersimpan ke database).");
+            ->with('success', "Anggota \"{$validated['nama']}\" berhasil ditambahkan.");
     }
 
-    // Method sisanya dibiarkan return string dummy dulu (akan dibahas di modul selanjutnya)
     public function show(string $id)
     {
-        return "MemberController@show, id: {$id}";
+        // ⬅️ UBAH: ambil dari DB
+        $member = Member::findOrFail($id);
+
+        return view('members.show', compact('member'));
     }
 
     public function edit(string $id)
     {
-        return "MemberController@edit, id: {$id}";
+        // ⬅️ UBAH: ambil dari DB
+        $member = Member::findOrFail($id);
+
+        return view('members.edit', compact('member'));
     }
 
-    public function update(Request $request, string $id)
+    public function update(StoreMemberRequest $request, string $id)
     {
-        return "MemberController@update, id: {$id}";
+        // ⬅️ UBAH: logika update sungguhan
+        $member = Member::findOrFail($id);
+
+        $member->update($request->validated());
+
+        return redirect()->route('members.index')
+            ->with('success', "Anggota \"{$request->validated()['nama']}\" berhasil diperbarui.");
     }
 
     public function destroy(string $id)
     {
-        return "MemberController@destroy, id: {$id}";
+        // ⬅️ UBAH: logika delete sungguhan
+        $member = Member::findOrFail($id);
+        $member->delete();
+
+        return redirect()->route('members.index')
+            ->with('success', 'Anggota berhasil dihapus.');
     }
 }
