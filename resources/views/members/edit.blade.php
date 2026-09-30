@@ -42,8 +42,8 @@
 
         <label for="status">Status</label>
         <select name="status" id="status">
-            <option value="aktif" {{ old('status', $member['status']) == 'aktif' ? 'selected' : '' }}>Aktif</option>
-            <option value="nonaktif" {{ old('status', $member['status']) == 'nonaktif' ? 'selected' : '' }}>Nonaktif</option>
+            <option value="aktif" @selected(old('status', $member['status']) == 'aktif')>Aktif</option>
+            <option value="nonaktif" @selected(old('status', $member['status']) == 'nonaktif')>Nonaktif</option>
         </select>
         @error('status') <div class="error">{{ $message }}</div> @enderror
 

@@ -37,7 +37,7 @@ class MemberController extends Controller
 
     public function show(string $id)
     {
-        $member = Member::findOrFail($id);
+        $member = Member::with(['loans.loanItems.book', 'loans.user'])->findOrFail($id);
 
         return view('members.show', compact('member'));
     }
@@ -49,14 +49,23 @@ class MemberController extends Controller
         return view('members.edit', compact('member'));
     }
 
-    public function update(StoreMemberRequest $request, string $id)
+    public function update(Request $request, string $id)
     {
         $member = Member::findOrFail($id);
 
-        $member->update($request->validated());
+        $validated = $request->validate([
+            'nama' => 'required|string|max:100',
+            'nim' => 'required|string|max:20|unique:members,nim,'.$member->id,
+            'email' => 'required|email|max:100|unique:members,email,'.$member->id,
+            'nomor_telepon' => 'required|string|max:15',
+            'alamat' => 'required|string',
+            'status' => 'required|in:aktif,nonaktif',
+        ]);
+
+        $member->update($validated);
 
         return redirect()->route('members.index')
-            ->with('success', "Anggota \"{$request->validated()['nama']}\" berhasil diperbarui.");
+            ->with('success', "Anggota \"{$validated['nama']}\" berhasil diperbarui.");
     }
 
     public function destroy(string $id)
