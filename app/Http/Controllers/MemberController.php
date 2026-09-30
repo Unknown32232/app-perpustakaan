@@ -3,16 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreMemberRequest;
-use App\Models\Member;                 // ⬅️ TAMBAHAN
+use App\Models\Member;                 
 use Illuminate\Http\Request;
 
 class MemberController extends Controller
 {
-    // ⬅️ HAPUS: private array $members = [...]  (tidak dipakai lagi)
-
-    public function index(Request $request)
+     public function index(Request $request)
     {
-        // ⬅️ UBAH: query Eloquent + search + pagination
         $search = $request->query('search');
 
         $members = Member::when($search, function ($query, $search) {
@@ -32,7 +29,6 @@ class MemberController extends Controller
     {
         $validated = $request->validated();
 
-        // ⬅️ TAMBAHAN: simpan ke DB
         Member::create($validated);
 
         return redirect()->route('members.index')
@@ -41,7 +37,6 @@ class MemberController extends Controller
 
     public function show(string $id)
     {
-        // ⬅️ UBAH: ambil dari DB
         $member = Member::findOrFail($id);
 
         return view('members.show', compact('member'));
@@ -49,7 +44,6 @@ class MemberController extends Controller
 
     public function edit(string $id)
     {
-        // ⬅️ UBAH: ambil dari DB
         $member = Member::findOrFail($id);
 
         return view('members.edit', compact('member'));
@@ -57,7 +51,6 @@ class MemberController extends Controller
 
     public function update(StoreMemberRequest $request, string $id)
     {
-        // ⬅️ UBAH: logika update sungguhan
         $member = Member::findOrFail($id);
 
         $member->update($request->validated());
@@ -68,7 +61,6 @@ class MemberController extends Controller
 
     public function destroy(string $id)
     {
-        // ⬅️ UBAH: logika delete sungguhan
         $member = Member::findOrFail($id);
         $member->delete();
 
