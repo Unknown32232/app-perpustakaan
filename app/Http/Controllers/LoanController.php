@@ -95,9 +95,21 @@ class LoanController extends Controller
             ->with('success', 'Transaksi peminjaman berhasil dihapus.');
     }
 
-    // Method tambahan untuk fitur pengembalian buku di luar CRUD standar
     public function kembalikan(string $id)
     {
-        return "LoanController@kembalikan, id: {$id}";
+        $loan = Loan::findOrFail($id);
+
+        if ($loan->status !== 'dipinjam') {
+            return redirect()->route('loans.index')
+                ->with('success', 'Transaksi ini sudah dikembalikan sebelumnya.');
+        }
+
+        $loan->update([
+            'status' => 'dikembalikan',
+            'tanggal_dikembalikan' => now()->toDateString(),
+        ]);
+
+        return redirect()->route('loans.index')
+            ->with('success', 'Buku berhasil dikembalikan.');
     }
 }

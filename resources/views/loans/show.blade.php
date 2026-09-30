@@ -37,8 +37,18 @@
             <td>{{ $loan['tanggal_dikembalikan'] ?? '-' }}</td>
         </tr>
         <tr>
-            <th>Status</th>
-            <td>{{ ucfirst($loan['status']) }}</td>
+        <th>Status</th>
+        <td>
+            @php
+                $badgeClass = match($loan['status']) {
+                    'dikembalikan' => 'badge-dikembalikan',
+                    'dipinjam' => 'badge-dipinjam',
+                    'terlambat' => 'badge-terlambat',
+                    default => 'badge-dipinjam',
+                };
+            @endphp
+            <span class="badge {{ $badgeClass }}">{{ ucfirst($loan['status']) }}</span>
+        </td>
         </tr>
     </table>
 

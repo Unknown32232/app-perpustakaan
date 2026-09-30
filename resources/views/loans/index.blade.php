@@ -34,16 +34,34 @@
                     </td>
                     <td>{{ $loan['tanggal_pinjam'] }}</td>
                     <td>{{ $loan['tanggal_kembali'] }}</td>
-                    <td>{{ ucfirst($loan['status']) }}</td>
+                    <td>
+                        @php
+                            $badgeClass = match($loan['status']) {
+                                'dikembalikan' => 'badge-dikembalikan',
+                                'dipinjam' => 'badge-dipinjam',
+                                'terlambat' => 'badge-terlambat',
+                                default => 'badge-dipinjam',
+                            };
+                        @endphp
+                        <span class="badge {{ $badgeClass }}">{{ ucfirst($loan['status']) }}</span>
+                    </td>
                     <td>
                         <a href="{{ route('loans.show', $loan['id']) }}">Detail</a>
                         |
                         <a href="{{ route('loans.edit', $loan['id']) }}">Edit</a>
                         |
+                        @if ($loan['status'] === 'dipinjam')
+                            <form class="inline" action="{{ route('loans.kembalikan', $loan['id']) }}" method="POST">
+                                @csrf
+                                @method('PATCH')
+                                <button type="submit" onclick="return confirm('Yakin kembalikan buku ini?')">Kembalikan</button>
+                            </form>
+                            |
+                        @endif
                         <form class="inline" action="{{ route('loans.destroy', $loan['id']) }}" method="POST">
                             @csrf
                             @method('DELETE')
-                            <button type="submit">Hapus</button>
+                            <button type="submit" onclick="return confirm('Yakin hapus data ini?')">Hapus</button>
                         </form>
                     </td>
                 </tr>
