@@ -29,6 +29,11 @@
         .badge-dikembalikan { background: #d1fae5; color: #065f46; }
         .badge-dipinjam { background: #fef3c7; color: #92400e; }
         .badge-terlambat { background: #fee2e2; color: #991b1b; }
+
+        /* File: resources/views/layouts/app.blade.php - di dalam <style>, setelah aturan nav ul li a.active */
+        nav .navbar-user { display: flex; align-items: center; gap: 12px; color: #cbd5e1; font-size: 14px; }
+        nav .btn-logout { background: none; border: 1px solid #cbd5e1; color: #cbd5e1; padding: 4px 10px; border-radius: 4px; cursor: pointer; font-size: 14px; }
+        nav .btn-logout:hover { background: #1e40af; color: #fff; }
     </style>
 </head>
 <body>
