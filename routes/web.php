@@ -5,12 +5,16 @@ use App\Http\Controllers\BookController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\LoanController;
 use App\Http\Controllers\MemberController;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 // Public
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+Route::get('/profil', [ProfileController::class, 'show'])->name('profil');
+Route::put('/profil/password', [ProfileController::class, 'updatePassword'])->name('profil.password');
 
 // Protected
 Route::middleware(['auth'])->group(function () {
