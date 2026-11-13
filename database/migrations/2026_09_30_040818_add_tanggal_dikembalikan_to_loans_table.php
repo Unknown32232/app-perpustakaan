@@ -11,9 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('loans', function (Blueprint $table) {
-            $table->date('tanggal_dikembalikan')->nullable()->after('tanggal_kembali');
-        });
+        // Kolom ini sudah ada di create_loans_table, jadi hanya ditambah kalau belum ada
+        // (supaya migrate:fresh tidak error "Duplicate column").
+        if (! Schema::hasColumn('loans', 'tanggal_dikembalikan')) {
+            Schema::table('loans', function (Blueprint $table) {
+                $table->date('tanggal_dikembalikan')->nullable()->after('tanggal_kembali');
+            });
+        }
     }
 
     /**
@@ -21,8 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('loans', function (Blueprint $table) {
-            $table->dropColumn('tanggal_dikembalikan');
-        });
+        // Dibiarkan kosong: kolom ini dimiliki oleh create_loans_table.
     }
 };
